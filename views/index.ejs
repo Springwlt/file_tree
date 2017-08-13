@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<link rel="stylesheet" type="text/css" href="./css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="./css/style.css" />
+<script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript" src="./js/bootstrap.js"></script>
+
+<body>
+   <div class="panel panel-default" style="padding: 10px;">
+    <div class="panel panel-default" style="width: 20%;float:left;height: 980px;background-color: #49473F">
+        <script type="text/x-template" id="item-template">
+            <li>
+                <div :class="{bold: isFolder}" @click="toggle" @dblclick="changeType">
+                    <span :id="model.value" onclick="getContent(id)">{{model.name}}</span>
+                    <span v-if="isFolder">[{{open ? '-' : '+'}}]</span>
+                </div>
+                <ul v-show="open" v-if="isFolder">
+                    <item class="item" v-for="model in model.children" :model="model">
+                    </item>
+                    <li class="add" @click="addChild">+</li>
+                </ul>
+            </li>
+        </script>
+            <ul id="demo">
+            <item class="item" :model="treeData">
+            </item>
+            </ul>
+    </div>
+    <div class="panel panel-default" style="width: 78%;float:left;height: 980px;margin-left: 10px;">
+       <textarea id="text-input" oninput="this.editer.update()" style="width:50%;height:980px; background:#2B2B2B;font-size:22px;color: white">
+       </textarea>
+        <div id="preview" style="float:right;width:50%;height:100%; border:0.5px solid #315;background:#3c3f41;color: white"></div>
+        <script src='./js/markdown-browser-0.6.0-beta1/markdown.js'></script>
+        <script type="text/javascript">
+            function Editor(input , preview){
+                this.update = function(){
+                    preview.innerHTML = markdown.toHTML(input.value);
+                };
+                input.editer = this
+                this.update()
+            }
+
+            var $ = function(id) {
+                return document.getElementById(id)
+            }
+            new Editor($("text-input"),$("preview"))
+        </script>
+    </div>
+    </div>
+</body>
+<script type="text/javascript" src="./js/vue.min.js"></script>
+<script type="text/javascript" src="./js/tree.js"></script>
+<script type="text/javascript" src="./js/demo.js"></script>
+<script type="text/javascript" src="./js/jquery.js"></script>
+<script>
+    function getContent(path) {
+        if(path){
+            $.ajax({
+                url: '/file/getContent',
+                type: 'post',
+                data: {
+                    path: path
+                },
+                success: function (result) {
+                    if (result.data === 'ok') {
+                       // $(location).attr('href', '/admin_all');
+                        $('#text-input').val(result.doc);
+                    }
+                }
+            });
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "file_tree",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "ejs": "^2.5.7",
+    "esprima": "^4.0.0",
+    "esprima-extract-comments": "^0.2.1",
+    "express": "^4.15.4",
+    "format-json": "^1.0.3",
+    "fs": "0.0.1-security",
+    "markdown-js": "0.0.3"
+  }
+}
